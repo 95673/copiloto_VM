@@ -1,0 +1,537 @@
+{
+  "versao": 3,
+  "atualizado_em": "2026-11-08",
+  "config": {
+    "validade_dias": 90,
+    "atalhos": [
+      "saldo mpesa",
+      "perdi megas",
+      "esqueci pin",
+      "puk",
+      "txova",
+      "extrato",
+      "luz",
+      "raspadinha"
+    ],
+    "palavras_ignoradas": [
+      "como",
+      "o",
+      "a",
+      "os",
+      "as",
+      "de",
+      "do",
+      "da",
+      "dos",
+      "das",
+      "para",
+      "em",
+      "no",
+      "na",
+      "nos",
+      "nas",
+      "um",
+      "uma",
+      "uns",
+      "umas",
+      "meu",
+      "minha",
+      "meus",
+      "minhas",
+      "quero",
+      "preciso",
+      "que",
+      "e",
+      "se",
+      "por",
+      "com",
+      "ao",
+      "aos",
+      "pelo",
+      "pela",
+      "me"
+    ],
+    "sinonimos": {
+      "senha": "pin",
+      "dados": "megas",
+      "mb": "megas",
+      "gb": "megas",
+      "saldos": "saldo",
+      "recargas": "recarga",
+      "carregar": "recarregar",
+      "ussd": "codigo"
+    }
+  },
+  "regra_sem_resposta": "Não tenho essa informação. Ligue para a linha 100.",
+  "faqs": [
+    {
+      "id": "mpesa-01",
+      "tema": "M-Pesa",
+      "pergunta": "Como consultar o saldo M-Pesa?",
+      "resposta": "Marque *150#, escolha 9, depois 1, depois 1 e digite o PIN.",
+      "parecidas": [
+        "ver saldo mpesa",
+        "quanto tenho no mpesa",
+        "saldo da carteira móvel"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-02",
+      "tema": "M-Pesa",
+      "pergunta": "Como levantar dinheiro no agente M-Pesa?",
+      "resposta": "Marque *150#, escolha 2, depois 1, digite o código do agente, o valor e o PIN.",
+      "parecidas": [
+        "levantar mpesa",
+        "tirar dinheiro no agente",
+        "sacar no agente"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-03",
+      "tema": "M-Pesa",
+      "pergunta": "Quanto custa depositar ou transferir de M-Pesa para M-Pesa?",
+      "resposta": "O depósito é gratuito e a transferência de M-Pesa para M-Pesa também é gratuita.",
+      "parecidas": [
+        "depósito mpesa tem custo",
+        "transferir mpesa tem taxa",
+        "enviar dinheiro mpesa é grátis"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-04",
+      "tema": "M-Pesa",
+      "pergunta": "Como enviar dinheiro do M-Pesa para uma conta bancária?",
+      "resposta": "Marque *150#, escolha 1, depois 2, escolha o banco, digite o NIB, o valor e o PIN.",
+      "parecidas": [
+        "mpesa para banco",
+        "transferir para o banco",
+        "enviar para NIB"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-05",
+      "tema": "M-Pesa",
+      "pergunta": "Como pagar a luz (EDM) pelo M-Pesa?",
+      "resposta": "Marque *150#, escolha 5, depois 1, digite o código do contador, o valor e o PIN.",
+      "parecidas": [
+        "pagar energia",
+        "comprar luz",
+        "recarregar contador edm"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-06",
+      "tema": "M-Pesa",
+      "pergunta": "Como pedir o extrato M-Pesa?",
+      "resposta": "Marque *150#, escolha 9, depois 1, depois 4, escolha o intervalo de meses, digite o PIN e confirme o email.",
+      "parecidas": [
+        "extrato mpesa",
+        "histórico de movimentos",
+        "quero o extrato por email"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-07",
+      "tema": "M-Pesa",
+      "pergunta": "Como ver os últimos 5 movimentos M-Pesa?",
+      "resposta": "Marque *150#, escolha 9, depois 1, depois 3 e digite o PIN.",
+      "parecidas": [
+        "últimas transações",
+        "ver movimentos",
+        "mini extrato"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-08",
+      "tema": "M-Pesa",
+      "pergunta": "Como comprar crédito pelo M-Pesa?",
+      "resposta": "Marque *150#, escolha 3, depois 1, depois 1 (para o meu número) ou 2 (para outro número), digite o valor e o PIN.",
+      "parecidas": [
+        "recarregar com mpesa",
+        "comprar saldo no mpesa",
+        "carregar crédito"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-09",
+      "tema": "M-Pesa",
+      "pergunta": "Transferi para o número errado. O que fazer?",
+      "resposta": "Marque *150#, escolha 9, depois 3, digite o PIN e escolha 1.",
+      "parecidas": [
+        "enviei para número errado",
+        "engano na transferência",
+        "reverter transferência"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-10",
+      "tema": "M-Pesa",
+      "pergunta": "Como mudar o PIN M-Pesa?",
+      "resposta": "Marque *150#, escolha 9, depois 6, depois 1, digite o novo PIN e confirme-o.",
+      "parecidas": [
+        "trocar pin",
+        "alterar pin mpesa",
+        "mudar a senha do mpesa"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-11",
+      "tema": "M-Pesa",
+      "pergunta": "Esqueci o PIN M-Pesa. Como recuperar?",
+      "resposta": "Marque *150#, escolha 9, depois 6, depois 2 e responda às questões de segurança.",
+      "parecidas": [
+        "perdi o pin",
+        "não sei o pin",
+        "recuperar senha mpesa"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-12",
+      "tema": "M-Pesa",
+      "pergunta": "Qual é o limite diário do M-Pesa?",
+      "resposta": "O limite diário é de 75.000 MT.",
+      "parecidas": [
+        "limite de transação",
+        "quanto posso movimentar por dia",
+        "máximo diário mpesa"
+      ],
+      "fonte": "Dino (confirmado em 2026-11-08)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "mpesa-13",
+      "tema": "M-Pesa",
+      "pergunta": "Quantas contas M-Pesa posso ter e quanto custa criar?",
+      "resposta": "Até 4 números por BI, cada um com a sua conta M-Pesa. A conta é gratuita.",
+      "parecidas": [
+        "quantos números por bi",
+        "criar conta mpesa custa",
+        "abrir mpesa"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "txuna-01",
+      "tema": "Txuna e Txova",
+      "pergunta": "Qual é a diferença entre Txuna crédito, Txuna M-Pesa e Txova?",
+      "resposta": "Txuna crédito é um empréstimo de saldo principal. Txuna M-Pesa é um empréstimo de dinheiro. Txova é um acréscimo de dinheiro na transação, mesmo sem saldo suficiente na carteira.",
+      "parecidas": [
+        "o que é txuna",
+        "o que é txova",
+        "txuna ou txova"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "txuna-02",
+      "tema": "Txuna e Txova",
+      "pergunta": "Como pedir Txuna crédito?",
+      "resposta": "Marque *111#, escolha 8, depois 1 e siga as instruções.",
+      "parecidas": [
+        "pedir emprestado crédito",
+        "emprestar saldo",
+        "sem saldo preciso de crédito"
+      ],
+      "fonte": "Dino (confirmado em 2026-11-08)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "txuna-03",
+      "tema": "Txuna e Txova",
+      "pergunta": "Como pedir Txuna M-Pesa?",
+      "resposta": "Marque *150#, escolha 8, depois 1 e siga as instruções.",
+      "parecidas": [
+        "empréstimo mpesa",
+        "pedir dinheiro emprestado",
+        "txuna mpesa"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "txuna-04",
+      "tema": "Txuna e Txova",
+      "pergunta": "Como usar o Txova?",
+      "resposta": "Marque *150#, escolha 8, depois 2 e siga as instruções.",
+      "parecidas": [
+        "txova mpesa",
+        "completar transação sem saldo",
+        "como pedir txova"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "pacotes-01",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como ver o menu de pacotes?",
+      "resposta": "Marque *111# para o menu geral de pacotes.",
+      "parecidas": [
+        "quais pacotes existem",
+        "ver pacotes",
+        "comprar pacote"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "pacotes-02",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como comprar pacotes para todas as redes?",
+      "resposta": "Marque *111#, escolha 2 e depois 2.",
+      "parecidas": [
+        "pacote todas as redes",
+        "chamadas para qualquer rede",
+        "pacote para todas redes"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "pacotes-03",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como comprar pacotes de SMS?",
+      "resposta": "Marque *111#, escolha 2 e depois 7.",
+      "parecidas": [
+        "pacote sms",
+        "mensagens ilimitadas",
+        "comprar sms"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "pacotes-04",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como ativar o Tudo Top ilimitado?",
+      "resposta": "Marque *111# e escolha 4.",
+      "parecidas": [
+        "tudo top",
+        "pacote ilimitado",
+        "ativar ilimitado"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "pacotes-05",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como ativar os pacotes Bom Dia?",
+      "resposta": "Marque *126#.",
+      "parecidas": [
+        "pacote bom dia",
+        "pacotes da manhã",
+        "ativar bom dia"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "pacotes-06",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como ativar o roaming?",
+      "resposta": "Marque *125#.",
+      "parecidas": [
+        "roaming internacional",
+        "usar no estrangeiro",
+        "viajar com o número"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "net-01",
+      "tema": "Pacotes e internet",
+      "pergunta": "Como proteger o saldo na internet (NET Control)?",
+      "resposta": "Marque *111#, escolha 5, depois 8, depois 2 e depois 1.",
+      "parecidas": [
+        "proteger o saldo da internet",
+        "net control",
+        "bloquear consumo de internet"
+      ],
+      "fonte": "Dino (confirmado em 2026-11-08)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "net-03",
+      "tema": "Pacotes e internet",
+      "pergunta": "Meus megas desapareceram. O que fazer?",
+      "resposta": "Desative o uso de dados em segundo plano no telemóvel. Pode também alterar a velocidade da internet: marque *111#, escolha 5, depois 8 e siga as instruções.",
+      "parecidas": [
+        "perdi os megas",
+        "acabaram os megas",
+        "a internet acabou muito depressa",
+        "gasta megas sem eu usar"
+      ],
+      "fonte": "Dino (confirmado em 2026-11-08)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "net-02",
+      "tema": "Pacotes e internet",
+      "pergunta": "Quais são os pacotes KayaNet (internet fibra)?",
+      "resposta": "Os pacotes KayaNet são de 1500 MT, 1999 MT e 2999 MT por mês.",
+      "parecidas": [
+        "internet fibra",
+        "preços kayanet",
+        "pacotes de casa"
+      ],
+      "fonte": "Dino (confirmado em 2026-11-08)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "credito-01",
+      "tema": "Crédito e saldo",
+      "pergunta": "Como recarregar com raspadinha?",
+      "resposta": "Marque *130*01*código_da_recarga#.",
+      "parecidas": [
+        "usar cartão de recarga",
+        "carregar com raspadinha",
+        "recarga com código"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "credito-02",
+      "tema": "Crédito e saldo",
+      "pergunta": "Como consultar o saldo principal e o bónus?",
+      "resposta": "Para o saldo principal marque *100#. Para o bónus marque *100*04#.",
+      "parecidas": [
+        "ver saldo",
+        "consultar bónus",
+        "quanto saldo tenho"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "credito-03",
+      "tema": "Crédito e saldo",
+      "pergunta": "Como transferir crédito?",
+      "resposta": "Marque *111#, escolha 11 ou 10 (serviços), depois 4, digite o valor, um espaço e o número.",
+      "parecidas": [
+        "passar saldo",
+        "enviar crédito",
+        "transferir saldo para outro número"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "credito-04",
+      "tema": "Crédito e saldo",
+      "pergunta": "Como transferir megas?",
+      "resposta": "Marque *111#, escolha 5, depois 8, depois 2, digite o valor e o número.",
+      "parecidas": [
+        "passar megas",
+        "enviar internet",
+        "partilhar megas"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "credito-05",
+      "tema": "Crédito e saldo",
+      "pergunta": "Como enviar um Call Me Back (Me Liga)?",
+      "resposta": "Marque *140*número#.",
+      "parecidas": [
+        "me liga",
+        "pedir que me liguem",
+        "call me back"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "servicos-01",
+      "tema": "Serviços e SIM",
+      "pergunta": "Como desbloquear o PUK?",
+      "resposta": "Marque *111#, escolha 11 ou 10 (serviços), depois 7 e digite o número.",
+      "parecidas": [
+        "cartão bloqueado",
+        "pedir puk",
+        "sim bloqueado"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "servicos-02",
+      "tema": "Serviços e SIM",
+      "pergunta": "Como saber o meu número?",
+      "resposta": "Marque *111#, escolha 11 (serviços), depois 8 e depois 1.",
+      "parecidas": [
+        "qual é o meu número",
+        "consultar número",
+        "esqueci o meu número"
+      ],
+      "fonte": "Dino (confirmado em 2026-11-08)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "premios-01",
+      "tema": "Prémios",
+      "pergunta": "Como ver os pontos Deketa?",
+      "resposta": "Marque *111#, escolha 7 e depois 1.",
+      "parecidas": [
+        "pontos deketa",
+        "deketa",
+        "ver pontos"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "premios-02",
+      "tema": "Prémios",
+      "pergunta": "Como participar no Jackpot e no Soprati?",
+      "resposta": "Para o Jackpot marque *111# e siga as instruções. Para o Soprati marque *109# e siga as instruções.",
+      "parecidas": [
+        "jackpot",
+        "soprati",
+        "sorteios"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    },
+    {
+      "id": "agente-01",
+      "tema": "Agente M-Pesa",
+      "pergunta": "O que é preciso para ser Agente M-Pesa?",
+      "resposta": "É preciso ter um estabelecimento (móvel ou imóvel), capacidade de investimento de no mínimo 10.000 MT, documento de identificação (BI, passaporte ou carta de condução), licença comercial ou alvará válido por 30 dias ou mais, NUIT, registo criminal (idoneidade), telemóvel para gerir a atividade e o formulário de adesão preenchido.",
+      "parecidas": [
+        "ser agente mpesa",
+        "abrir banca mpesa",
+        "como virar agente"
+      ],
+      "fonte": "Dino (FAQs Vodacom corrigidas)",
+      "atualizado_em": "2026-11-08"
+    }
+  ]
+}
