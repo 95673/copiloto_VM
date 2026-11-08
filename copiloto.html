@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Copiloto do Agente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Aspeto do Copiloto. As cores estão no topo (:root), muda só aí. */
+:root{--bg:#F6F8F7;--ink:#0B2E33;--mut:#4A6468;--teal:#0F7C80;--acc:#E9A800;--line:#CFDAD8;--alerta:#B3261E;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1F22;--ink:#EAF3F1;--mut:#A3B9B8;--teal:#3DB7B2;--acc:#F2B01E;--line:#23454A;--alerta:#FF9C94}}
+:root[data-theme="dark"]{--bg:#0A1F22;--ink:#EAF3F1;--mut:#A3B9B8;--teal:#3DB7B2;--acc:#F2B01E;--line:#23454A;--alerta:#FF9C94}
+html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:light dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:68rem;margin:0 auto;padding:1rem 1rem 3rem}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.9rem}
+h1{font:800 1.3rem "Bricolage Grotesque",Figtree,sans-serif;margin:0}
+header span{color:var(--mut);font-size:.9rem}
+#q{width:100%;font:600 1.25rem Figtree,system-ui,sans-serif;color:var(--ink);background:transparent;border:3px solid var(--ink);border-radius:.6rem;padding:.9rem 1rem}
+#q:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0 .2rem}
+.chips button{font:600 .95rem Figtree,system-ui,sans-serif;color:var(--ink);background:var(--line);border:0;border-radius:2rem;padding:.5rem .9rem;cursor:pointer}
+.chips.temas button{background:transparent;box-shadow:inset 0 0 0 2px var(--line)}
+.rotulo{margin:1rem 0 .1rem;color:var(--mut);font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+#estado{margin:1rem 0 .5rem;color:var(--mut);font-size:.9rem;min-height:1.3em}
+.res{border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:.5rem;padding:.9rem 1rem;margin-bottom:.8rem}
+.res:first-child{border-left-color:var(--acc)}
+.res small{color:var(--teal);font-weight:600}
+.res h3{margin:.1rem 0 .4rem;font:600 1rem Figtree,sans-serif;color:var(--mut)}
+.res p{margin:0 0 .7rem;font-size:1.2rem;line-height:1.5}
+code{font:600 1em ui-monospace,Menlo,Consolas,monospace;background:var(--line);border-radius:.3rem;padding:.05em .35em;white-space:nowrap}
+.res button{font:600 .95rem Figtree,system-ui,sans-serif;color:var(--ink);background:transparent;border:2px solid var(--ink);border-radius:.4rem;padding:.45rem .9rem;cursor:pointer}
+.vazio{border:2px dashed var(--line);border-radius:.5rem;padding:1.1rem;font-size:1.15rem}
+footer{color:var(--mut);font-size:.85rem;margin-top:1.5rem}
+.layout{display:block}
+.dica{display:none;color:var(--mut);font-size:.85rem;margin:.6rem 0 0}
+.res.sel{box-shadow:0 0 0 3px var(--acc)}
+@media (max-width:55.99rem){body.com-res #atalhos{display:none}}
+@media (min-width:56rem){
+  .wrap{padding:1.5rem 2rem 3rem}
+  #q{font-size:1.5rem;padding:1.1rem 1.3rem}
+  .layout{display:grid;grid-template-columns:17rem 1fr;gap:2rem;align-items:start;margin-top:.5rem}
+  #atalhos{position:sticky;top:1rem}
+  #estado{margin-top:.2rem}
+}
+@media (hover:hover) and (pointer:fine){.dica{display:block}}
+.velha{display:block;margin:-.2rem 0 .7rem;color:var(--alerta);font-size:.9rem;font-weight:600;font-style:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Copiloto do Agente</h1><span id="contagem"></span></header>
+  <input id="q" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escreve 1 ou 2 palavras" aria-label="Dúvida do cliente">
+  <p class="dica">↑ ↓ escolher · Enter copiar · Esc limpar · / pesquisar</p>
+  <div class="layout">
+    <aside id="atalhos"><p class="rotulo">Mais usadas</p><div class="chips" id="mais"></div><p class="rotulo">Temas</p><div class="chips temas" id="temas"></div></aside>
+    <main><div id="estado" aria-live="polite"></div><div id="res"></div></main>
+  </div>
+  <noscript>Ativa o JavaScript para usar o Copiloto.</noscript>
+  <footer>Respostas só das FAQs validadas. Sem dados de clientes. Protótipo de demonstração.</footer>
+</div>
+<script>
+window.FAQS_EMBUTIDAS = {"versao": 3, "atualizado_em": "2026-11-08", "config": {"validade_dias": 90, "atalhos": ["saldo mpesa", "perdi megas", "esqueci pin", "puk", "txova", "extrato", "luz", "raspadinha"], "palavras_ignoradas": ["como", "o", "a", "os", "as", "de", "do", "da", "dos", "das", "para", "em", "no", "na", "nos", "nas", "um", "uma", "uns", "umas", "meu", "minha", "meus", "minhas", "quero", "preciso", "que", "e", "se", "por", "com", "ao", "aos", "pelo", "pela", "me"], "sinonimos": {"senha": "pin", "dados": "megas", "mb": "megas", "gb": "megas", "saldos": "saldo", "recargas": "recarga", "carregar": "recarregar", "ussd": "codigo"}}, "regra_sem_resposta": "Não tenho essa informação. Ligue para a linha 100.", "faqs": [{"id": "mpesa-01", "tema": "M-Pesa", "pergunta": "Como consultar o saldo M-Pesa?", "resposta": "Marque *150#, escolha 9, depois 1, depois 1 e digite o PIN.", "parecidas": ["ver saldo mpesa", "quanto tenho no mpesa", "saldo da carteira móvel"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-02", "tema": "M-Pesa", "pergunta": "Como levantar dinheiro no agente M-Pesa?", "resposta": "Marque *150#, escolha 2, depois 1, digite o código do agente, o valor e o PIN.", "parecidas": ["levantar mpesa", "tirar dinheiro no agente", "sacar no agente"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-03", "tema": "M-Pesa", "pergunta": "Quanto custa depositar ou transferir de M-Pesa para M-Pesa?", "resposta": "O depósito é gratuito e a transferência de M-Pesa para M-Pesa também é gratuita.", "parecidas": ["depósito mpesa tem custo", "transferir mpesa tem taxa", "enviar dinheiro mpesa é grátis"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-04", "tema": "M-Pesa", "pergunta": "Como enviar dinheiro do M-Pesa para uma conta bancária?", "resposta": "Marque *150#, escolha 1, depois 2, escolha o banco, digite o NIB, o valor e o PIN.", "parecidas": ["mpesa para banco", "transferir para o banco", "enviar para NIB"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-05", "tema": "M-Pesa", "pergunta": "Como pagar a luz (EDM) pelo M-Pesa?", "resposta": "Marque *150#, escolha 5, depois 1, digite o código do contador, o valor e o PIN.", "parecidas": ["pagar energia", "comprar luz", "recarregar contador edm"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-06", "tema": "M-Pesa", "pergunta": "Como pedir o extrato M-Pesa?", "resposta": "Marque *150#, escolha 9, depois 1, depois 4, escolha o intervalo de meses, digite o PIN e confirme o email.", "parecidas": ["extrato mpesa", "histórico de movimentos", "quero o extrato por email"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-07", "tema": "M-Pesa", "pergunta": "Como ver os últimos 5 movimentos M-Pesa?", "resposta": "Marque *150#, escolha 9, depois 1, depois 3 e digite o PIN.", "parecidas": ["últimas transações", "ver movimentos", "mini extrato"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-08", "tema": "M-Pesa", "pergunta": "Como comprar crédito pelo M-Pesa?", "resposta": "Marque *150#, escolha 3, depois 1, depois 1 (para o meu número) ou 2 (para outro número), digite o valor e o PIN.", "parecidas": ["recarregar com mpesa", "comprar saldo no mpesa", "carregar crédito"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-09", "tema": "M-Pesa", "pergunta": "Transferi para o número errado. O que fazer?", "resposta": "Marque *150#, escolha 9, depois 3, digite o PIN e escolha 1.", "parecidas": ["enviei para número errado", "engano na transferência", "reverter transferência"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-10", "tema": "M-Pesa", "pergunta": "Como mudar o PIN M-Pesa?", "resposta": "Marque *150#, escolha 9, depois 6, depois 1, digite o novo PIN e confirme-o.", "parecidas": ["trocar pin", "alterar pin mpesa", "mudar a senha do mpesa"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-11", "tema": "M-Pesa", "pergunta": "Esqueci o PIN M-Pesa. Como recuperar?", "resposta": "Marque *150#, escolha 9, depois 6, depois 2 e responda às questões de segurança.", "parecidas": ["perdi o pin", "não sei o pin", "recuperar senha mpesa"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-12", "tema": "M-Pesa", "pergunta": "Qual é o limite diário do M-Pesa?", "resposta": "O limite diário é de 75.000 MT.", "parecidas": ["limite de transação", "quanto posso movimentar por dia", "máximo diário mpesa"], "fonte": "Dino (confirmado em 2026-11-08)", "atualizado_em": "2026-11-08"}, {"id": "mpesa-13", "tema": "M-Pesa", "pergunta": "Quantas contas M-Pesa posso ter e quanto custa criar?", "resposta": "Até 4 números por BI, cada um com a sua conta M-Pesa. A conta é gratuita.", "parecidas": ["quantos números por bi", "criar conta mpesa custa", "abrir mpesa"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "txuna-01", "tema": "Txuna e Txova", "pergunta": "Qual é a diferença entre Txuna crédito, Txuna M-Pesa e Txova?", "resposta": "Txuna crédito é um empréstimo de saldo principal. Txuna M-Pesa é um empréstimo de dinheiro. Txova é um acréscimo de dinheiro na transação, mesmo sem saldo suficiente na carteira.", "parecidas": ["o que é txuna", "o que é txova", "txuna ou txova"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "txuna-02", "tema": "Txuna e Txova", "pergunta": "Como pedir Txuna crédito?", "resposta": "Marque *111#, escolha 8, depois 1 e siga as instruções.", "parecidas": ["pedir emprestado crédito", "emprestar saldo", "sem saldo preciso de crédito"], "fonte": "Dino (confirmado em 2026-11-08)", "atualizado_em": "2026-11-08"}, {"id": "txuna-03", "tema": "Txuna e Txova", "pergunta": "Como pedir Txuna M-Pesa?", "resposta": "Marque *150#, escolha 8, depois 1 e siga as instruções.", "parecidas": ["empréstimo mpesa", "pedir dinheiro emprestado", "txuna mpesa"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "txuna-04", "tema": "Txuna e Txova", "pergunta": "Como usar o Txova?", "resposta": "Marque *150#, escolha 8, depois 2 e siga as instruções.", "parecidas": ["txova mpesa", "completar transação sem saldo", "como pedir txova"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "pacotes-01", "tema": "Pacotes e internet", "pergunta": "Como ver o menu de pacotes?", "resposta": "Marque *111# para o menu geral de pacotes.", "parecidas": ["quais pacotes existem", "ver pacotes", "comprar pacote"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "pacotes-02", "tema": "Pacotes e internet", "pergunta": "Como comprar pacotes para todas as redes?", "resposta": "Marque *111#, escolha 2 e depois 2.", "parecidas": ["pacote todas as redes", "chamadas para qualquer rede", "pacote para todas redes"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "pacotes-03", "tema": "Pacotes e internet", "pergunta": "Como comprar pacotes de SMS?", "resposta": "Marque *111#, escolha 2 e depois 7.", "parecidas": ["pacote sms", "mensagens ilimitadas", "comprar sms"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "pacotes-04", "tema": "Pacotes e internet", "pergunta": "Como ativar o Tudo Top ilimitado?", "resposta": "Marque *111# e escolha 4.", "parecidas": ["tudo top", "pacote ilimitado", "ativar ilimitado"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "pacotes-05", "tema": "Pacotes e internet", "pergunta": "Como ativar os pacotes Bom Dia?", "resposta": "Marque *126#.", "parecidas": ["pacote bom dia", "pacotes da manhã", "ativar bom dia"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "pacotes-06", "tema": "Pacotes e internet", "pergunta": "Como ativar o roaming?", "resposta": "Marque *125#.", "parecidas": ["roaming internacional", "usar no estrangeiro", "viajar com o número"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "net-01", "tema": "Pacotes e internet", "pergunta": "Como proteger o saldo na internet (NET Control)?", "resposta": "Marque *111#, escolha 5, depois 8, depois 2 e depois 1.", "parecidas": ["proteger o saldo da internet", "net control", "bloquear consumo de internet"], "fonte": "Dino (confirmado em 2026-11-08)", "atualizado_em": "2026-11-08"}, {"id": "net-03", "tema": "Pacotes e internet", "pergunta": "Meus megas desapareceram. O que fazer?", "resposta": "Desative o uso de dados em segundo plano no telemóvel. Pode também alterar a velocidade da internet: marque *111#, escolha 5, depois 8 e siga as instruções.", "parecidas": ["perdi os megas", "acabaram os megas", "a internet acabou muito depressa", "gasta megas sem eu usar"], "fonte": "Dino (confirmado em 2026-11-08)", "atualizado_em": "2026-11-08"}, {"id": "net-02", "tema": "Pacotes e internet", "pergunta": "Quais são os pacotes KayaNet (internet fibra)?", "resposta": "Os pacotes KayaNet são de 1500 MT, 1999 MT e 2999 MT por mês.", "parecidas": ["internet fibra", "preços kayanet", "pacotes de casa"], "fonte": "Dino (confirmado em 2026-11-08)", "atualizado_em": "2026-11-08"}, {"id": "credito-01", "tema": "Crédito e saldo", "pergunta": "Como recarregar com raspadinha?", "resposta": "Marque *130*01*código_da_recarga#.", "parecidas": ["usar cartão de recarga", "carregar com raspadinha", "recarga com código"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "credito-02", "tema": "Crédito e saldo", "pergunta": "Como consultar o saldo principal e o bónus?", "resposta": "Para o saldo principal marque *100#. Para o bónus marque *100*04#.", "parecidas": ["ver saldo", "consultar bónus", "quanto saldo tenho"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "credito-03", "tema": "Crédito e saldo", "pergunta": "Como transferir crédito?", "resposta": "Marque *111#, escolha 11 ou 10 (serviços), depois 4, digite o valor, um espaço e o número.", "parecidas": ["passar saldo", "enviar crédito", "transferir saldo para outro número"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "credito-04", "tema": "Crédito e saldo", "pergunta": "Como transferir megas?", "resposta": "Marque *111#, escolha 5, depois 8, depois 2, digite o valor e o número.", "parecidas": ["passar megas", "enviar internet", "partilhar megas"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "credito-05", "tema": "Crédito e saldo", "pergunta": "Como enviar um Call Me Back (Me Liga)?", "resposta": "Marque *140*número#.", "parecidas": ["me liga", "pedir que me liguem", "call me back"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "servicos-01", "tema": "Serviços e SIM", "pergunta": "Como desbloquear o PUK?", "resposta": "Marque *111#, escolha 11 ou 10 (serviços), depois 7 e digite o número.", "parecidas": ["cartão bloqueado", "pedir puk", "sim bloqueado"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "servicos-02", "tema": "Serviços e SIM", "pergunta": "Como saber o meu número?", "resposta": "Marque *111#, escolha 11 (serviços), depois 8 e depois 1.", "parecidas": ["qual é o meu número", "consultar número", "esqueci o meu número"], "fonte": "Dino (confirmado em 2026-11-08)", "atualizado_em": "2026-11-08"}, {"id": "premios-01", "tema": "Prémios", "pergunta": "Como ver os pontos Deketa?", "resposta": "Marque *111#, escolha 7 e depois 1.", "parecidas": ["pontos deketa", "deketa", "ver pontos"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "premios-02", "tema": "Prémios", "pergunta": "Como participar no Jackpot e no Soprati?", "resposta": "Para o Jackpot marque *111# e siga as instruções. Para o Soprati marque *109# e siga as instruções.", "parecidas": ["jackpot", "soprati", "sorteios"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}, {"id": "agente-01", "tema": "Agente M-Pesa", "pergunta": "O que é preciso para ser Agente M-Pesa?", "resposta": "É preciso ter um estabelecimento (móvel ou imóvel), capacidade de investimento de no mínimo 10.000 MT, documento de identificação (BI, passaporte ou carta de condução), licença comercial ou alvará válido por 30 dias ou mais, NUIT, registo criminal (idoneidade), telemóvel para gerir a atividade e o formulário de adesão preenchido.", "parecidas": ["ser agente mpesa", "abrir banca mpesa", "como virar agente"], "fonte": "Dino (FAQs Vodacom corrigidas)", "atualizado_em": "2026-11-08"}]};
+/* Motor de procura do Copiloto. Normalmente não precisas de mexer aqui:
+   as palavras ignoradas e os sinónimos estão em faqs.json, dentro de "config". */
+function criarMotor(config) {
+  const PARAR = new Set(config.palavras_ignoradas);
+  const SIN = config.sinonimos;
+  const norm = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/m[\s-]?pesa/g, "mpesa").replace(/[^a-z0-9]+/g, " ").trim();
+  const toks = s => norm(s).split(" ").filter(t => t && !PARAR.has(t)).map(t => SIN[t] || t);
+  function dist(a, b) {
+    const m = [];
+    for (let i = 0; i <= a.length; i++) m[i] = [i];
+    for (let j = 1; j <= b.length; j++) m[0][j] = j;
+    for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+      m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return m[a.length][b.length];
+  }
+  function casa(q, d) {
+    if (q === d) return 1;                                   // palavra igual
+    if (q.length >= 3 && d.startsWith(q)) return 0.8;        // a meio de escrever
+    if (q.length >= 4 && d.length >= 4 && dist(q, d) <= (q.length >= 6 ? 2 : 1)) return 0.6; // gralha
+    return 0;
+  }
+  // pesos: pergunta 3, perguntas parecidas 3, tema 1, resposta 0.6
+  const indexar = faqs => faqs.map(f => ({ f, campos: [[toks(f.pergunta), 3], [toks(f.parecidas.join(" ")), 3], [toks(f.tema), 1], [toks(f.resposta), 0.6]] }));
+  function procurar(indice, texto, max = 4) {
+    const q = toks(texto);
+    if (!q.length) return [];
+    const res = [];
+    for (const { f, campos } of indice) {
+      let soma = 0, achou = 0;
+      for (const t of q) {
+        let melhor = 0, segundo = 0;
+        for (const [lista, peso] of campos) for (const d of lista) {
+          const c = casa(t, d) * (peso === 0.6 && /^\d+$/.test(t) ? 3 : peso);   // códigos numéricos pesam mais na resposta
+          if (c > melhor) { segundo = melhor; melhor = c; } else if (c > segundo) segundo = c;
+        }
+        if (melhor > 0) { soma += melhor + 0.3 * segundo; achou++; }
+      }
+      if (!achou) continue;
+      if (q.length > 1 && achou < q.length) soma *= 0.4;     // faltou alguma palavra
+      if (soma >= 1.2) res.push({ f, soma: soma - 0.01 * campos[0][0].length });
+    }
+    res.sort((a, b) => b.soma - a.soma);
+    return res.filter(r => r.soma >= res[0].soma * 0.5).slice(0, max).map(r => r.f);
+  }
+  return { indexar, procurar, norm, toks };
+}
+if (typeof module !== "undefined") module.exports = { criarMotor };
+
+/* Interface do Copiloto. Para mudar respostas, atalhos ou sinónimos edita só o faqs.json. */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const destacar = t => esc(t).replace(/\*\d[^\s]*?#/g, "<code>$&</code>");   // códigos USSD em destaque
+let DADOS, CFG, motor, indice, sel = 0;
+
+function selecionar(i) {   // realça um cartão (setas do teclado)
+  const c = document.querySelectorAll("#res .res");
+  if (!c.length) return;
+  sel = Math.max(0, Math.min(c.length - 1, i));
+  c.forEach((el, n) => el.classList.toggle("sel", n === sel));
+  c[sel].scrollIntoView({ block: "nearest" });
+}
+
+const dias = d => Math.floor((Date.now() - new Date(d + "T00:00:00")) / 864e5);
+const velha = f => dias(f.atualizado_em) > CFG.validade_dias;
+
+function cartao(f) {
+  return '<article class="res"><small>' + esc(f.tema) + "</small><h3>" + esc(f.pergunta) + "</h3><p>" + destacar(f.resposta) + "</p>" +
+    (velha(f) ? '<em class="velha">Confirmar antes de usar: verificada há ' + dias(f.atualizado_em) + " dias</em>" : "") +
+    '<button type="button" data-id="' + esc(f.id) + '">Copiar resposta</button></article>';
+}
+function mostrar(lista, ms) {
+  document.body.classList.add("com-res");
+  if (!lista.length) { $("estado").textContent = ""; $("res").innerHTML = '<div class="vazio">' + esc(DADOS.regra_sem_resposta) + "</div>"; return; }
+  $("estado").textContent = lista.length + (lista.length === 1 ? " resposta em " : " respostas em ") + Math.max(1, Math.round(ms)) + " ms";
+  $("res").innerHTML = lista.map(cartao).join("");
+  selecionar(0);
+}
+function pesquisar(texto) {
+  if (!texto.trim()) { document.body.classList.remove("com-res"); $("estado").textContent = ""; $("res").innerHTML = ""; return; }
+  const t0 = performance.now();
+  const r = motor.procurar(indice, texto);
+  mostrar(r, performance.now() - t0);
+}
+async function copiar(texto) {
+  try { await navigator.clipboard.writeText(texto); }
+  catch (e) { const a = document.createElement("textarea"); a.value = texto; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e2) {} a.remove(); }
+}
+async function iniciar() {
+  try {
+    if (window.FAQS_EMBUTIDAS) DADOS = window.FAQS_EMBUTIDAS;   // versão de uma só página (demonstração)
+    else {
+      const r = await fetch("faqs.json", { cache: "no-cache" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      DADOS = await r.json();
+    }
+  } catch (e) {
+    $("estado").textContent = "Não consegui ler o faqs.json (falta o ficheiro ou tem um erro de escrita, por exemplo uma vírgula em falta).";
+    return;
+  }
+  CFG = DADOS.config; motor = criarMotor(CFG); indice = motor.indexar(DADOS.faqs);
+  $("contagem").textContent = DADOS.faqs.length + " respostas";
+  $("mais").innerHTML = CFG.atalhos.map(a => '<button type="button">' + esc(a) + "</button>").join("");
+  const temas = [...new Set(DADOS.faqs.map(f => f.tema))];
+  $("temas").innerHTML = temas.map(t => '<button type="button" data-tema="' + esc(t) + '">' + esc(t) + "</button>").join("");
+  $("q").addEventListener("input", e => pesquisar(e.target.value));
+  $("atalhos").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.tema) { $("q").value = ""; mostrar(DADOS.faqs.filter(f => f.tema === b.dataset.tema), 1); }
+    else { $("q").value = b.textContent; pesquisar(b.textContent); }
+  });
+  $("res").addEventListener("click", async e => {
+    const b = e.target.closest("button[data-id]"); if (!b) return;
+    await copiar(DADOS.faqs.find(x => x.id === b.dataset.id).resposta);
+    b.textContent = "Copiado ✓"; setTimeout(() => { b.textContent = "Copiar resposta"; }, 1500);
+  });
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches) $("q").focus();   // computador: pronto a escrever
+}
+
+/* Teclado (computador): / pesquisar, setas escolher, Enter copiar, Esc limpar */
+document.addEventListener("keydown", e => {
+  const campo = document.activeElement === $("q");
+  if (e.key === "/" && !campo && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); $("q").focus(); return; }
+  if (e.key === "Escape" && DADOS) { $("q").value = ""; pesquisar(""); $("q").focus(); return; }
+  const cartoes = document.querySelectorAll("#res .res");
+  if (!cartoes.length) return;
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); selecionar(sel + (e.key === "ArrowDown" ? 1 : -1)); }
+  else if (e.key === "Enter" && campo) { e.preventDefault(); cartoes[sel].querySelector("button").click(); }
+});
+iniciar();
+</script>
+</body>
+</html>

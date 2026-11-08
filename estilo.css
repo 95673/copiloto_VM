@@ -1,0 +1,40 @@
+/* Aspeto do Copiloto. As cores estão no topo (:root), muda só aí. */
+:root{--bg:#F6F8F7;--ink:#0B2E33;--mut:#4A6468;--teal:#0F7C80;--acc:#E9A800;--line:#CFDAD8;--alerta:#B3261E;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1F22;--ink:#EAF3F1;--mut:#A3B9B8;--teal:#3DB7B2;--acc:#F2B01E;--line:#23454A;--alerta:#FF9C94}}
+:root[data-theme="dark"]{--bg:#0A1F22;--ink:#EAF3F1;--mut:#A3B9B8;--teal:#3DB7B2;--acc:#F2B01E;--line:#23454A;--alerta:#FF9C94}
+html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:light dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.55 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:68rem;margin:0 auto;padding:1rem 1rem 3rem}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.9rem}
+h1{font:800 1.3rem "Bricolage Grotesque",Figtree,sans-serif;margin:0}
+header span{color:var(--mut);font-size:.9rem}
+#q{width:100%;font:600 1.25rem Figtree,system-ui,sans-serif;color:var(--ink);background:transparent;border:3px solid var(--ink);border-radius:.6rem;padding:.9rem 1rem}
+#q:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0 .2rem}
+.chips button{font:600 .95rem Figtree,system-ui,sans-serif;color:var(--ink);background:var(--line);border:0;border-radius:2rem;padding:.5rem .9rem;cursor:pointer}
+.chips.temas button{background:transparent;box-shadow:inset 0 0 0 2px var(--line)}
+.rotulo{margin:1rem 0 .1rem;color:var(--mut);font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+#estado{margin:1rem 0 .5rem;color:var(--mut);font-size:.9rem;min-height:1.3em}
+.res{border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:.5rem;padding:.9rem 1rem;margin-bottom:.8rem}
+.res:first-child{border-left-color:var(--acc)}
+.res small{color:var(--teal);font-weight:600}
+.res h3{margin:.1rem 0 .4rem;font:600 1rem Figtree,sans-serif;color:var(--mut)}
+.res p{margin:0 0 .7rem;font-size:1.2rem;line-height:1.5}
+code{font:600 1em ui-monospace,Menlo,Consolas,monospace;background:var(--line);border-radius:.3rem;padding:.05em .35em;white-space:nowrap}
+.res button{font:600 .95rem Figtree,system-ui,sans-serif;color:var(--ink);background:transparent;border:2px solid var(--ink);border-radius:.4rem;padding:.45rem .9rem;cursor:pointer}
+.vazio{border:2px dashed var(--line);border-radius:.5rem;padding:1.1rem;font-size:1.15rem}
+footer{color:var(--mut);font-size:.85rem;margin-top:1.5rem}
+.layout{display:block}
+.dica{display:none;color:var(--mut);font-size:.85rem;margin:.6rem 0 0}
+.res.sel{box-shadow:0 0 0 3px var(--acc)}
+@media (max-width:55.99rem){body.com-res #atalhos{display:none}}
+@media (min-width:56rem){
+  .wrap{padding:1.5rem 2rem 3rem}
+  #q{font-size:1.5rem;padding:1.1rem 1.3rem}
+  .layout{display:grid;grid-template-columns:17rem 1fr;gap:2rem;align-items:start;margin-top:.5rem}
+  #atalhos{position:sticky;top:1rem}
+  #estado{margin-top:.2rem}
+}
+@media (hover:hover) and (pointer:fine){.dica{display:block}}
+.velha{display:block;margin:-.2rem 0 .7rem;color:var(--alerta);font-size:.9rem;font-weight:600;font-style:normal}

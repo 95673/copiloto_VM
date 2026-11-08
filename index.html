@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Copiloto do Agente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Copiloto do Agente</h1><span id="contagem"></span></header>
+  <input id="q" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escreve 1 ou 2 palavras" aria-label="Dúvida do cliente">
+  <p class="dica">↑ ↓ escolher · Enter copiar · Esc limpar · / pesquisar</p>
+  <div class="layout">
+    <aside id="atalhos"><p class="rotulo">Mais usadas</p><div class="chips" id="mais"></div><p class="rotulo">Temas</p><div class="chips temas" id="temas"></div></aside>
+    <main><div id="estado" aria-live="polite"></div><div id="res"></div></main>
+  </div>
+  <noscript>Ativa o JavaScript para usar o Copiloto.</noscript>
+  <footer>Respostas só das FAQs validadas. Sem dados de clientes. Protótipo de demonstração.</footer>
+</div>
+<script src="busca.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
